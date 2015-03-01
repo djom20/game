@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="user-scalable=no, width=460, height=300, initial-scale=1.0, maximum-scale=1.0"/>
 	<title>AltiviaOT - The Game</title>
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<canvas id="lienzo"></canvas>
+	<button id="initGame" onclick="$game.initGame('lienzo')">Init Game</button>
+	<canvas id="lienzo">
+		Your browser does not support the HTML5 canvas tag.
+	</canvas>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js"></script>
 	<script src="assets/js/objs.js"></script>
 	<script src="assets/js/main.js"></script>
 </body>
