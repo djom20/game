@@ -8,18 +8,26 @@ window.$game = {
 	init: function(canvas){
 		this.log('Init Canvas');
 		window.$imgs 	= new imagenes();
-		window.$lienzo 	= canvas;
+		window.$lienzo 	= canvas.getContext('2d');
+		window.$init 	= false;
 		window.$play 	= false;
-		window.$tap 	= new tapPlacard(35, 75, 10, 10, "tap");
+		window.$level 	= 1;
+		window.$x 		= 0;
+		window.$y 		= 0;
 
-		document.onkeydown = this.onkeydown;
-        document.onkeyup = this.onkeyup;
+		window.$tap 	= new tapPlacard(35, 75, 10, 10, "tap");
+		window.$bPause 	= new button(280, 0, 10, 10, "pause");
+		window.$bPlay 	= new button(130, 100, 10, 10, "start");
+
+		// canvas.addEventListener("onkeydown", this.onkeydown);
+		document.onkeydown 	= this.onkeydown;
+        document.onkeyup 	= this.onkeyup;
 	},
 	support: function(id_canvas){
 		var canvas = document.getElementById(id_canvas);
 		if (canvas.getContext){
 			this.log('Support Canvas');
-			this.init(canvas.getContext('2d'));
+			this.init(canvas);
 			return true;
 		} else {
 			this.log('Your browser does not support the HTML5 canvas tag');
@@ -33,75 +41,93 @@ window.$game = {
 	},
 	createImages: function(){
 		this.log('Create Images');
-		this.log('Bg');
-		$imgs.add("bg", "http://test.altiviaot.com/game/assets/imgs/bg2.png");
+		var imgs = ['bg','bird','getready','pause','tap','title','start'];
 
-		this.log('Bird');
-		$imgs.add("bird", "http://test.altiviaot.com/game/assets/imgs/bird.png");
-
-		this.log('Getready');
-		$imgs.add("getready", "http://test.altiviaot.com/game/assets/imgs/getready.png");
-
-		this.log('Pause');
-		$imgs.add("pause", "http://test.altiviaot.com/game/assets/imgs/pause.png");
-
-		this.log('Tap');
-		$imgs.add("tap", "http://test.altiviaot.com/game/assets/imgs/tap.png");
+		for (var i = 0; i < imgs.length; i++) {
+			$imgs.add(imgs[i], "http://test.altiviaot.com/game/assets/imgs/" + imgs[i] + ".png");
+		}
 
 		this.loadImages();
 	},
 	loadImages: function(){
-		// if(!$imgs.isLoaded()){
-			this.clear();
+		this.clear();
 
-			this.log('Load Images');
-			this.log('Bg');
-			$lienzo.drawImage($imgs.get("bg"), 0, 0, 600, 150);
+		this.log('Load Images');
+		$lienzo.drawImage($imgs.get("bg"), 0, 0, 600, 150);
+		$lienzo.drawImage($imgs.get("bird"), 30, 50, 20, 20);
+		$lienzo.drawImage($imgs.get("getready"), 95, 15, 120, 20);
 
-			this.log('Bird');
-			$lienzo.drawImage($imgs.get("bird"), 30, 50, 20, 20);
+		$tap.brush($lienzo);
 
-			this.log('Getready');
-			$lienzo.drawImage($imgs.get("getready"), 95, 15, 120, 20);
-
-			this.log('Pause');
-			$lienzo.drawImage($imgs.get("pause"), 285, 5, 10, 10);
-
-			this.log('Tap');
-			$tap.brush($lienzo);
-
-			if($imgs.isLoaded()){
-				this.log('Loaded');
-				// this.gameLoop();
-			} else {
-				this.log('No Loaded');
-			}	
-		// }
+		if($imgs.isLoaded()){
+			this.log('Loaded');
+		} else {
+			this.log('No Loaded');
+			// this.loadImages();
+		}
 	},
 	gameLoop: function () {
 		this.getRequestAnimationFrame(this.gameLoop);
-		this.loadImages();
+		this.startLevel();
 	},
 	getRequestAnimationFrame: function(callback){
        	window.setTimeout(callback, 1000 / 60);
 	},
-	onkeydown:  function(e){
+	onkeydown: function(e){
 		if(e.keyCode == 32) { // Espace
-            // HERE
+            $game.playGame();
         } else if (e.keyCode == 27) { // ESC
-            // HERE
+            $game.pauseGame();
+        } else if (e.keyCode == 13) { // Enter
+            $game.playGame(2);
         }
 	},
-	onkeyup:  function(e){
+	onkeyup: function(e){
 		if(e.keyCode == 32) {
             // HERE
         }
 	},
-	waitActions:  function(){
+	waitActions: function(){
 
 	},
-	startGame: function(){
+	playGame: function(e){
+		this.log('Start Game');
+		if(!$play && !$init){
+        	$play = true;
+        	$init = true;
 
+			this.clear();
+			this.startLevel();
+        }else if(!$play && $init && e == 2){
+        	$play = true;
+
+			this.clear();
+			this.startLevel();
+        }
+	},
+	restartGame: function(){
+
+	},
+	pauseGame: function(){
+		if($init){
+			$play = false;
+
+			this.clear();
+			$lienzo.drawImage($imgs.get("bg"), 0, 0, 600, 150);
+			$lienzo.drawImage($imgs.get("title"), 100, 15, 100, 40);
+
+			$bPlay.brush($lienzo);
+		}
+	},
+	startLevel: function(){
+		if($level == 1){
+			$lienzo.drawImage($imgs.get("bg"), 0, 0, 600, 150);
+			$lienzo.drawImage($imgs.get("bird"), 30, 50, 20, 20);
+
+			$bPause.brush($lienzo);
+		} else if($level == 2){
+
+		}
 	},
 	clear: function(){		
 		this.log('Clear Images');
