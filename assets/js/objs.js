@@ -3,13 +3,13 @@ function imagenes () {
     var img = [];
 
     this.add = function (imagen, directorio) {
-    	console.log('Add Image ' + imagen);
+    	// console.log('Add Image ' + imagen);
         img[imagen] 	= new Image();
         img[imagen].src = directorio;
     }
 
     this.get = function (imagen) {
-    	console.log('Load Image ' + imagen);
+    	// console.log('Load Image ' + imagen);
         return img[imagen];
     }
 
@@ -28,7 +28,7 @@ function imagenes () {
 function tapPlacard(_x, _y, _w, _h, _image){
     var image 	= _image;
     var inicio 	= 1;
-    var escalar = 0.03;
+    var escalar = 0.02;
 
     this.x 		= _x;
     this.y 		= _y;
@@ -51,8 +51,6 @@ function tapPlacard(_x, _y, _w, _h, _image){
 
 function button(_x, _y, _w, _h, _image){
     var image 	= _image;
-    var inicio 	= 1;
-    var escalar = 0.03;
 
     this.x 		= _x;
     this.y 		= _y;
