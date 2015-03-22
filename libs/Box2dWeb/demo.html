@@ -146,7 +146,7 @@
             
             if(mouseJoint) {
                if(isMouseDown) {
-                  mouseJoint.SetTarget(new b2Vec2(mouseX, mouseY));
+                  // mouseJoint.SetTarget(new b2Vec2(mouseX, mouseY));
                } else {
                   world.DestroyJoint(mouseJoint);
                   mouseJoint = null;

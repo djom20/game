@@ -1,5 +1,5 @@
 // Trato de Imagenes
-function imagenes () {
+function image () {
     var img = [];
 
     this.add = function (imagen, directorio) {
@@ -21,6 +21,30 @@ function imagenes () {
             }
         }
 
+        return carga;
+    }
+}
+
+function sound () {
+    var au = [];
+    
+    this.add = function (audio, directorio) {
+        au[audio] = document.createElement("audio");
+        au[audio].src = directorio;
+    }
+    
+    this.play = function (audio) {
+        au[audio].play();
+    }
+    
+    this.isLoaded = function () {
+        var carga = true;
+        for (var k in au) {
+            if (img.hasOwnProperty(k)) {
+                carga = (!carga)? false : au[k].seekable.end();
+            }
+        }
+        
         return carga;
     }
 }
